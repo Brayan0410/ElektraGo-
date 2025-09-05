@@ -19,7 +19,7 @@ struct ContentView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 550)
                     .rotationEffect(.degrees(30))
-                    .offset(x: 100, y: 350)
+                    .offset(x: 100, y: 250)
                 
                 VStack(spacing: 20) {
                     Text("Elektra")
