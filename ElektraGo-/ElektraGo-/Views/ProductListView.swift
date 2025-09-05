@@ -12,13 +12,32 @@ struct ProductListView: View {
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
-        List(viewModel.productos, id: \.id) { product in
-            ProductCard(product: product)
-                .onTapGesture {
-                    viewModel.selectedProduct = product
-                    presentationMode.wrappedValue.dismiss()
-                }
+        ZStack {
+            LinearGradient(
+                gradient: Gradient(colors: [.red, .clear]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+
+            List(viewModel.productos, id: \.id) { product in
+                ProductCard(product: product)
+                    .onTapGesture {
+                        viewModel.selectProduct(product)
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    .listRowBackground(Color.clear)
+            }
+            .scrollContentBackground(.hidden)
         }
-        .navigationTitle("Selecciona un producto")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("Selecciona un producto")
+                    .font(.system(size: 25, weight: .bold))
+                    .foregroundColor(.black)
+            }
+        }
     }
 }
+

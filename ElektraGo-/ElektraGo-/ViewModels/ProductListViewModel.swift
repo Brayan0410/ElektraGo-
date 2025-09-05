@@ -13,15 +13,16 @@ final class ProductListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    private let service: ProductServiceProtocol
+    private let repository: ProductRepositoryProtocol
 
-    init(service: ProductServiceProtocol = ProductService()) {
-        self.service = service
+    init(repository: ProductRepositoryProtocol = ProductRepository()) {
+        self.repository = repository
+        self.selectedProduct = repository.getSelectedProduct()
     }
 
-    func loadProducts() {
+    func loadProducts(forceRefresh: Bool = false) {
         isLoading = true
-        service.fetchProducts { [weak self] result in
+        repository.fetchProducts(forceRefresh: forceRefresh) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self else { return }
                 self.isLoading = false
@@ -34,5 +35,9 @@ final class ProductListViewModel: ObservableObject {
             }
         }
     }
-}
 
+    func selectProduct(_ product: Producto) {
+        selectedProduct = product
+        repository.saveSelectedProduct(product)
+    }
+}
